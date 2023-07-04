@@ -1,20 +1,50 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import MyWalletLogo from "../components/MyWalletLogo"
+import axios from "axios"
+import { useState } from "react"
 
 export default function SignUpPage() {
+
+  const registerURL = "http://localhost:5000/cadastro"
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const navigate = useNavigate();
+
+  function register(e){
+    e.preventDefault();
+    if(password != passwordConfirmation){
+      alert("A confirmação de senha não bate com o campo senha!")
+      return ;
+    }
+    const promise = axios.post(registerURL, {
+      username,
+      email,
+      password
+    });
+    promise.catch((error) => {
+      alert(error.response.data);
+    });
+    promise.then(() => {
+      navigate("/");
+    });
+  }
+
+
   return (
     <SingUpContainer>
-      <form>
+      <form onSubmit={register}>
         <MyWalletLogo />
-        <input placeholder="Nome" type="text" />
-        <input placeholder="E-mail" type="email" />
-        <input placeholder="Senha" type="password" autocomplete="new-password" />
-        <input placeholder="Confirme a senha" type="password" autocomplete="new-password" />
-        <button>Cadastrar</button>
+        <input placeholder="Nome" type="text" value={username} onChange={e => setUsername(e.target.value)} required/>
+        <input placeholder="E-mail" type="email" value={email} onChange={e => setEmail(e.target.value)} required/>
+        <input placeholder="Senha" type="password" autoComplete="new-password" value={password} onChange={e => setPassword(e.target.value)} required/>
+        <input placeholder="Confirme a senha" type="password" autoComplete="new-password" value={passwordConfirmation} onChange={e => setPasswordConfirmation(e.target.value)} required/>
+        <button type="submit">Cadastrar</button>
       </form>
 
-      <Link>
+      <Link to="/">
         Já tem uma conta? Entre agora!
       </Link>
     </SingUpContainer>
