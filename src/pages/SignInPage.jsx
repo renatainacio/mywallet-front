@@ -6,7 +6,7 @@ import axios from "axios";
 
 export default function SignInPage() {
 
-  const loginURL = "http://localhost:5000/"
+  const loginURL = import.meta.env.VITE_API_URL;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
