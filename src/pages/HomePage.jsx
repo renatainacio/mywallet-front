@@ -1,13 +1,48 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
+import { useContext, useEffect, useState } from "react"
+import AuthContext from "../context/AuthContext"
+import axios from "axios"
 
 export default function HomePage() {
+  const baseURL = import.meta.env.VITE_API_URL;
+  const [token, setToken] = useContext(AuthContext);
+  const [user, setUser] = useState("");
+  let config = "";
+
+  useEffect(() => {
+    if(!token){
+      const localUserToken = JSON.parse(localStorage.getItem("token"));
+      if(localUserToken){
+        setToken(localUserToken);
+        config = {
+          headers: {
+            "Authorization": `Bearer ${localUserToken}`
+          }
+        }
+      }
+    }
+    else {
+      config = {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    }}
+    const promise = axios.get(`${baseURL}user`, config);
+    promise.then((res) => {
+      console.log(res.data);
+      setUser(res.data);
+    });
+    promise.catch((err) => alert(err.response.data));
+    
+  });
+
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, Fulano</h1>
-        <BiExit />
+        <h1>Olá, <span data-test="user-name">{user.name}</span></h1>
+        <BiExit data-test="logout"/>
       </Header>
 
       <TransactionsContainer>
@@ -15,9 +50,9 @@ export default function HomePage() {
           <ListItemContainer>
             <div>
               <span>30/11</span>
-              <strong>Almoço mãe</strong>
+              <strong data-test="registry-name">Almoço mãe</strong>
             </div>
-            <Value color={"negativo"}>120,00</Value>
+            <Value color={"negativo"} data-test="registry-amount">120,00</Value>
           </ListItemContainer>
 
           <ListItemContainer>
@@ -31,17 +66,17 @@ export default function HomePage() {
 
         <article>
           <strong>Saldo</strong>
-          <Value color={"positivo"}>2880,00</Value>
+          <Value color={"positivo"} data-test="total-amount">2880,00</Value>
         </article>
       </TransactionsContainer>
 
 
       <ButtonsContainer>
-        <button>
+        <button data-test="new-income">
           <AiOutlinePlusCircle />
           <p>Nova <br /> entrada</p>
         </button>
-        <button>
+        <button data-test="new-expense">
           <AiOutlineMinusCircle />
           <p>Nova <br />saída</p>
         </button>

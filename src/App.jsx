@@ -8,7 +8,7 @@ import AuthContext from "./context/AuthContext"
 import { useState } from "react"
 
 export default function App() {
-  const [token, setToken] = useState({});
+  const [token, setToken] = useState("");
   
   return (
     <PagesContainer>
