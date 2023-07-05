@@ -1,15 +1,26 @@
 import styled from "styled-components"
 import { Link, useNavigate } from "react-router-dom"
 import MyWalletLogo from "../components/MyWalletLogo"
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import AuthContext from "../context/AuthContext";
 
 export default function SignInPage() {
 
   const loginURL = import.meta.env.VITE_API_URL;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useContext(AuthContext);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const localUserToken = JSON.parse(localStorage.getItem("token"));
+    if(localUserToken){
+      setToken(localUserToken);
+      navigate("/home");
+    }
+  });
 
   function login(e){
     e.preventDefault();
@@ -20,7 +31,10 @@ export default function SignInPage() {
     promise.catch((error) => {
       alert(error.response.data);
     });
-    promise.then(() => {
+    promise.then((res) => {
+      console.log(res.data);
+      setToken(res.data);
+      localStorage.setItem("token", JSON.stringify(res.data));
       navigate("/home");
     });
   }

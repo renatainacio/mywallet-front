@@ -4,10 +4,15 @@ import HomePage from "./pages/HomePage"
 import SignInPage from "./pages/SignInPage"
 import SignUpPage from "./pages/SignUpPage"
 import TransactionsPage from "./pages/TransactionPage"
+import AuthContext from "./context/AuthContext"
+import { useState } from "react"
 
 export default function App() {
+  const [token, setToken] = useState({});
+  
   return (
     <PagesContainer>
+      <AuthContext.Provider value={[token, setToken]}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SignInPage />} />
@@ -16,6 +21,7 @@ export default function App() {
           <Route path="/nova-transacao/:tipo" element={<TransactionsPage />} />
         </Routes>
       </BrowserRouter>
+      </AuthContext.Provider>
     </PagesContainer>
   )
 }
