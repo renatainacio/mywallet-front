@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
 import { useContext, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import axios from "axios"
 
@@ -9,6 +10,7 @@ export default function HomePage() {
   const baseURL = import.meta.env.VITE_API_URL;
   const [token, setToken] = useContext(AuthContext);
   const [user, setUser] = useState("");
+  const navigate = useNavigate();
   let config = "";
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export default function HomePage() {
     });
     promise.catch((err) => alert(err.response.data));
     
-  });
+  }, []);
 
   return (
     <HomeContainer>
@@ -72,11 +74,11 @@ export default function HomePage() {
 
 
       <ButtonsContainer>
-        <button data-test="new-income">
+        <button onClick={() => navigate("/nova-transacao/entrada")} data-test="new-income">
           <AiOutlinePlusCircle />
           <p>Nova <br /> entrada</p>
         </button>
-        <button data-test="new-expense">
+        <button onClick={() => navigate("/nova-transacao/saida")} data-test="new-expense">
           <AiOutlineMinusCircle />
           <p>Nova <br />saída</p>
         </button>

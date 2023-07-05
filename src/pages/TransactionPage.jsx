@@ -5,8 +5,8 @@ export default function TransactionsPage() {
     <TransactionsContainer>
       <h1>Nova TRANSAÇÃO</h1>
       <form>
-        <input placeholder="Valor" type="text" data-test="registry-amount-input"/>
-        <input placeholder="Descrição" type="text" data-test="registry-name-input"/>
+        <input placeholder="Valor" type="text" data-test="registry-amount-input" required/>
+        <input placeholder="Descrição" type="text" data-test="registry-name-input" required/>
         <button data-test="registry-save">Salvar TRANSAÇÃO</button>
       </form>
     </TransactionsContainer>

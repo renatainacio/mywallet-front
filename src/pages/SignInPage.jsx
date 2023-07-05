@@ -20,7 +20,7 @@ export default function SignInPage() {
       setToken(localUserToken);
       navigate("/home");
     }
-  });
+  }, []);
 
   function login(e){
     e.preventDefault();
