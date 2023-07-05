@@ -29,7 +29,7 @@ export default function HomePage() {
         "Authorization": `Bearer ${token}`
       }
     }}
-    const promise = axios.get(`${baseURL}user`, config);
+    const promise = axios.get(`${baseURL}/user`, config);
     promise.then((res) => {
       console.log(res.data);
       setUser(res.data);

@@ -6,7 +6,7 @@ import { useState } from "react"
 
 export default function SignUpPage() {
 
-  const registerURL = `${import.meta.env.VITE_API_URL}cadastro`
+  const registerURL = `${import.meta.env.VITE_API_URL}/cadastro`
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
