@@ -10,6 +10,7 @@ export default function HomePage() {
   const baseURL = import.meta.env.VITE_API_URL;
   const [token, setToken] = useContext(AuthContext);
   const [user, setUser] = useState("");
+  const [transactions, setTransactions] = useState([]);
   const navigate = useNavigate();
   let config = "";
 
@@ -37,9 +38,13 @@ export default function HomePage() {
       console.log(res.data);
     });
     promise.catch((err) => alert(err.response.data));
-    
+    const promiseTransactions = axios.get(`${baseURL}/transacoes`, config);
+    promiseTransactions.then((res) => {
+      setTransactions(res.data);
+    });
+    promiseTransactions.catch((err) => alert(err.response.data));
   }, []);
-
+  console.log(transactions[0]);
   return (
     <HomeContainer>
       <Header>
@@ -49,23 +54,17 @@ export default function HomePage() {
 
       <TransactionsContainer>
         <ul>
-          <ListItemContainer>
-            <div>
-              <span>30/11</span>
-              <strong data-test="registry-name">Almoço mãe</strong>
-            </div>
-            <Value color={"negativo"} data-test="registry-amount">120,00</Value>
-          </ListItemContainer>
-
-          <ListItemContainer>
-            <div>
-              <span>15/11</span>
-              <strong>Salário</strong>
-            </div>
-            <Value color={"positivo"}>3000,00</Value>
-          </ListItemContainer>
+          {transactions.length > 0 ? transactions.map(item => 
+                      <ListItemContainer>
+                      <div>
+                        <span>{item.date}</span>
+                        <strong>{item.description}</strong>
+                      </div>
+                      <Value color={item.type === "entrada" ? "positivo" : "negativo"}>{item.amount}</Value>
+                    </ListItemContainer>
+            ) : ""
+          }
         </ul>
-
         <article>
           <strong>Saldo</strong>
           <Value color={"positivo"} data-test="total-amount">2880,00</Value>
