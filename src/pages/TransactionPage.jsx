@@ -43,6 +43,23 @@ export default function TransactionsPage() {
       return alert("O valor informado deve ser positivo.")
     if(Number.isInteger(amount))
       return alert("O valor informado deve ser de ponto flutuante.");
+      if(!token){
+        localUserToken = JSON.parse(localStorage.getItem("token"));
+        if(localUserToken){
+          setToken(localUserToken);
+          config = {
+            headers: {
+              "Authorization": `Bearer ${localUserToken}`
+            }
+          }
+        }
+      }
+      else {
+        config = {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      }}
     const promise = axios.post(`${import.meta.env.VITE_API_URL}/nova-transacao/${tipo}`, {
       description,
       amount

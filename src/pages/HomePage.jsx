@@ -47,8 +47,9 @@ export default function HomePage() {
       setTransactions(res.data);
     });
     promise.catch((err) => alert(err.response.data));
-    calculateTotal();
   }, []);
+
+  useEffect(() => calculateTotal(), [transactions]);
 
   function logout(){
     localStorage.removeItem("token");
@@ -82,14 +83,14 @@ export default function HomePage() {
                         <span>{item.date}</span>
                         <strong data-test="registry-name">{item.description}</strong>
                       </div>
-                      <Value color={item.type === "entrada" ? "positivo" : "negativo"} data-test="registry-amount">{item.amount}</Value>
+                      <Value color={item.type === "entrada" ? "positivo" : "negativo"} data-test="registry-amount">{Number(item.amount).toLocaleString("pt-br")}</Value>
                     </ListItemContainer>
             ) : <p>Não há registros de entrada ou saída</p>
           }
         </ul>
         <article>
           <strong>Saldo</strong>
-          <Value color={saldo >= 0 ? "positivo" : "negativo"} data-test="total-amount">{saldo}</Value>
+          <Value color={saldo >= 0 ? "positivo" : "negativo"} data-test="total-amount">{saldo.toLocaleString("pt-br")}</Value>
         </article>
       </TransactionsContainer>
 
