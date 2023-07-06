@@ -34,6 +34,7 @@ export default function HomePage() {
     const promise = axios.get(`${baseURL}/user`, config);
     promise.then((res) => {
       setUser(res.data);
+      console.log(res.data);
     });
     promise.catch((err) => alert(err.response.data));
     

@@ -1,18 +1,21 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
+import AuthContext from "../context/AuthContext";
 
 export default function TransactionsPage() {
 
   const {tipo} = useParams();
   const type = tipo === "entrada" ? "entrada" : tipo === "saida" ? "saída" : "";
-  const [amount, setAmount] = useState(0);
-  const [description, setDescription] = useState("");
+  const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
   const [token, setToken] = useContext(AuthContext);
   const navigate = useNavigate();
+  let config;
 
-  function registerTransaction(){
+  function registerTransaction(e){
+    e.preventDefault();
     if(amount <= 0)
       return alert("O valor informado deve ser positivo.")
     if(Number.isInteger(amount))
@@ -34,7 +37,7 @@ export default function TransactionsPage() {
         "Authorization": `Bearer ${token}`
       }
     }}
-    const promise = axios.get(`${import.meta.env.VITE_API_URL}/nova-transacao/${tipo}`, {
+    const promise = axios.post(`${import.meta.env.VITE_API_URL}/nova-transacao/${tipo}`, {
       description,
       amount
     }, config);
@@ -47,7 +50,7 @@ export default function TransactionsPage() {
       <h1>Nova {type}</h1>
       <form onSubmit={registerTransaction}>
         <input placeholder="Valor" type="number" data-test="registry-amount-input" required value={amount} onChange={e => setAmount(e.target.value)}/>
-        <input placeholder="Descrição" type="text" data-test="registry-name-input" required value={description} onChange={e => setDescription(e.target.description)}/>
+        <input placeholder="Descrição" type="text" data-test="registry-name-input" required value={description} onChange={e => setDescription(e.target.value)}/>
         <button data-test="registry-save">Salvar {type}</button>
       </form>
     </TransactionsContainer>

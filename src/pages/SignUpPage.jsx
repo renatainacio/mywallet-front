@@ -27,9 +27,7 @@ export default function SignUpPage() {
     promise.catch((error) => {
       alert(error.response.data);
     });
-    promise.then(() => {
-      navigate("/");
-    });
+    promise.then(() => navigate("/"));
   }
 
 
