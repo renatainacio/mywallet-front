@@ -106,7 +106,7 @@ export default function HomePage(props) {
                       </div>
                       <ValueButton>
                         <Value color={item.type === "entrada" ? "positivo" : "negativo"} data-test="registry-amount">{Number(item.amount).toLocaleString("pt-br").replace('.', '')}</Value>
-                        <button onClick={() => deleteTransaction(item._id, item.description, item.amount)}>X</button>
+                        <button onClick={() => deleteTransaction(item._id, item.description, item.amount)} data-test="registry-delete">X</button>
                       </ValueButton>
                     </ListItemContainer>
             ) : <p>Não há registros de entrada ou saída</p>
