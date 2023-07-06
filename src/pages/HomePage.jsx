@@ -44,7 +44,7 @@ export default function HomePage() {
     });
     promiseTransactions.catch((err) => alert(err.response.data));
   }, []);
-  console.log(transactions[0]);
+  console.log(transactions);
   return (
     <HomeContainer>
       <Header>
@@ -55,7 +55,7 @@ export default function HomePage() {
       <TransactionsContainer>
         <ul>
           {transactions.length > 0 ? transactions.map(item => 
-                      <ListItemContainer>
+                    <ListItemContainer key={item.id}>
                       <div>
                         <span>{item.date}</span>
                         <strong>{item.description}</strong>
