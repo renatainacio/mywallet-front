@@ -83,14 +83,14 @@ export default function HomePage() {
                         <span>{item.date}</span>
                         <strong data-test="registry-name">{item.description}</strong>
                       </div>
-                      <Value color={item.type === "entrada" ? "positivo" : "negativo"} data-test="registry-amount">{Number(item.amount).toLocaleString("pt-br")}</Value>
+                      <Value color={item.type === "entrada" ? "positivo" : "negativo"} data-test="registry-amount">{Number(item.amount).toLocaleString("pt-br").replace('.', '')}</Value>
                     </ListItemContainer>
             ) : <p>Não há registros de entrada ou saída</p>
           }
         </ul>
         <article>
           <strong>Saldo</strong>
-          <Value color={saldo >= 0 ? "positivo" : "negativo"} data-test="total-amount">{saldo.toLocaleString("pt-br")}</Value>
+          <Value color={saldo >= 0 ? "positivo" : "negativo"} data-test="total-amount">{saldo.toLocaleString("pt-br").replace('.', '')}</Value>
         </article>
       </TransactionsContainer>
 
