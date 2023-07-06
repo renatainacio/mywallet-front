@@ -6,13 +6,14 @@ import { useNavigate } from "react-router-dom"
 import AuthContext from "../context/AuthContext"
 import axios from "axios"
 
-export default function HomePage() {
+export default function HomePage(props) {
   const baseURL = import.meta.env.VITE_API_URL;
   const [token, setToken] = useContext(AuthContext);
   const [user, setUser] = useState("");
   const [transactions, setTransactions] = useState([]);
   const [saldo, setSaldo] = useState(0);
   const [update, setUpdate] = useState(0);
+  const {setAmount, setDescription, setId} = props;
   const navigate = useNavigate();
   let config = "";
   let localUserToken;
@@ -81,6 +82,13 @@ export default function HomePage() {
     }
   }
 
+  function updateTransaction(item){
+    setAmount(item.amount);
+    setDescription(item.description);
+    setId(item._id);
+    navigate(`/editar-registro/${item.type}`);
+  }
+
   return (
     <HomeContainer>
       <Header>
@@ -94,7 +102,7 @@ export default function HomePage() {
                     <ListItemContainer key={item._id}>
                       <div>
                         <span>{item.date}</span>
-                        <strong data-test="registry-name">{item.description}</strong>
+                        <strong data-test="registry-name" onClick={() => updateTransaction(item)}>{item.description}</strong>
                       </div>
                       <ValueButton>
                         <Value color={item.type === "entrada" ? "positivo" : "negativo"} data-test="registry-amount">{Number(item.amount).toLocaleString("pt-br").replace('.', '')}</Value>
