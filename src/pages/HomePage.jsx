@@ -11,6 +11,7 @@ export default function HomePage() {
   const [token, setToken] = useContext(AuthContext);
   const [user, setUser] = useState("");
   const [transactions, setTransactions] = useState([]);
+  const [saldo, setSaldo] = useState(0);
   const navigate = useNavigate();
   let config = "";
 
@@ -43,12 +44,24 @@ export default function HomePage() {
       setTransactions(res.data);
     });
     promiseTransactions.catch((err) => alert(err.response.data));
+    calculateTotal();
   }, []);
 
   function logout(){
     localStorage.removeItem("token");
     setToken("");
     navigate("/");
+  }
+
+  function calculateTotal(){
+    let entradas = 0;
+    let saidas = 0;
+    transactions.forEach(t => {
+      t.type === "entrada" ? entradas += Number(t.amount) : saidas += Number(t.amount)
+    });
+    console.log(entradas);
+    console.log(saidas);
+    setSaldo(entradas - saidas);
   }
 
   return (
@@ -73,7 +86,7 @@ export default function HomePage() {
         </ul>
         <article>
           <strong>Saldo</strong>
-          <Value color={"positivo"} data-test="total-amount">2880,00</Value>
+          <Value color={saldo >= 0 ? "positivo" : "negativo"} data-test="total-amount">{saldo}</Value>
         </article>
       </TransactionsContainer>
 
@@ -123,6 +136,7 @@ const TransactionsContainer = styled.article`
     display: flex;
     align-items: center;
     position: fixed;
+    margin: 0;
     bottom: 154px;
     background-color: white;
     height: 50px;
@@ -137,7 +151,6 @@ const TransactionsContainer = styled.article`
   }
   ul{
     margin-bottom: 30px;
-    padding: 16px;
   }
   p{
     color: #868686;
