@@ -44,25 +44,31 @@ export default function HomePage() {
     });
     promiseTransactions.catch((err) => alert(err.response.data));
   }, []);
-  console.log(transactions);
+
+  function logout(){
+    localStorage.removeItem("token");
+    setToken("");
+    navigate("/");
+  }
+
   return (
     <HomeContainer>
       <Header>
         <h1>Olá, <span data-test="user-name">{user.name}</span></h1>
-        <BiExit data-test="logout"/>
+        <BiExit onClick={logout} data-test="logout"/>
       </Header>
 
       <TransactionsContainer>
         <ul>
           {transactions.length > 0 ? transactions.map(item => 
-                    <ListItemContainer key={item.id}>
+                    <ListItemContainer key={item._id}>
                       <div>
                         <span>{item.date}</span>
-                        <strong>{item.description}</strong>
+                        <strong data-test="registry-name">{item.description}</strong>
                       </div>
-                      <Value color={item.type === "entrada" ? "positivo" : "negativo"}>{item.amount}</Value>
+                      <Value color={item.type === "entrada" ? "positivo" : "negativo"} data-test="registry-amount">{item.amount}</Value>
                     </ListItemContainer>
-            ) : ""
+            ) : <p>Não há registros de entrada ou saída</p>
           }
         </ul>
         <article>
@@ -110,13 +116,34 @@ const TransactionsContainer = styled.article`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: scroll;
+  margin-bottom: 128px;
+  position: relative;
   article {
     display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: 154px;
+    background-color: white;
+    height: 50px;
+    width: calc(100vw - 80px);
+    border-radius: 5px;
+    z-index: 1;
     justify-content: space-between;   
     strong {
       font-weight: 700;
       text-transform: uppercase;
     }
+  }
+  ul{
+    margin-bottom: 30px;
+    padding: 16px;
+  }
+  p{
+    color: #868686;
+    font-size: 20px;
+    line-height: 23px;
+    text-align: center;
   }
 `
 const ButtonsContainer = styled.section`
@@ -124,6 +151,10 @@ const ButtonsContainer = styled.section`
   margin-bottom: 0;
   display: flex;
   gap: 15px;
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  width: calc(100vw - 50px);
   
   button {
     width: 50%;
