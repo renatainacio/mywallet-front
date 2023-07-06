@@ -12,11 +12,12 @@ export default function HomePage() {
   const [user, setUser] = useState("");
   const [transactions, setTransactions] = useState([]);
   const [saldo, setSaldo] = useState(0);
+  const [update, setUpdate] = useState(0);
   const navigate = useNavigate();
   let config = "";
   let localUserToken;
 
-  useEffect(() => {
+  function setConfig(){
     if(!token){
       localUserToken = JSON.parse(localStorage.getItem("token"));
       if(localUserToken){
@@ -36,6 +37,10 @@ export default function HomePage() {
     }}
     if(!token && !localUserToken)
       return navigate('/');
+  }
+
+  useEffect(() => {
+    setConfig();
     const promise = axios.get(`${baseURL}/user`, config);
     promise.then((res) => {
       setUser(res.data);
@@ -47,7 +52,7 @@ export default function HomePage() {
       setTransactions(res.data);
     });
     promise.catch((err) => alert(err.response.data));
-  }, []);
+  }, [update]);
 
   useEffect(() => calculateTotal(), [transactions]);
 
@@ -63,9 +68,17 @@ export default function HomePage() {
     transactions.forEach(t => {
       t.type === "entrada" ? entradas += Number(t.amount) : saidas += Number(t.amount)
     });
-    console.log(entradas);
-    console.log(saidas);
     setSaldo(entradas - saidas);
+  }
+
+  function deleteTransaction(id, description, amount){
+    setConfig();
+    if(window.confirm(`Deseja deletar a transação "${description}" de R$${amount.toLocaleString("pt-br").replace(".", "")}?`)){
+      console.log(`Deletar transacao id ${id}`);
+      const promise = axios.delete(`${baseURL}/transacoes/${id}`, config);
+      promise.then(() => console.log(setUpdate(update + 1)));
+      promise.catch((err) => alert(err.response.data));
+    }
   }
 
   return (
@@ -83,7 +96,10 @@ export default function HomePage() {
                         <span>{item.date}</span>
                         <strong data-test="registry-name">{item.description}</strong>
                       </div>
-                      <Value color={item.type === "entrada" ? "positivo" : "negativo"} data-test="registry-amount">{Number(item.amount).toLocaleString("pt-br").replace('.', '')}</Value>
+                      <ValueButton>
+                        <Value color={item.type === "entrada" ? "positivo" : "negativo"} data-test="registry-amount">{Number(item.amount).toLocaleString("pt-br").replace('.', '')}</Value>
+                        <button onClick={() => deleteTransaction(item._id, item.description, item.amount)}>X</button>
+                      </ValueButton>
                     </ListItemContainer>
             ) : <p>Não há registros de entrada ou saída</p>
           }
@@ -163,6 +179,25 @@ const TransactionsContainer = styled.article`
     text-align: center;
   }
 `
+
+const ValueButton = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  button{
+    background: none;
+	  color: #C6C6C6;
+	  border: none;
+    width: 30px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    text-align: center;
+    padding: 0;
+    margin-left: 5px;
+  }
+`
+
 const ButtonsContainer = styled.section`
   margin-top: 15px;
   margin-bottom: 0;
