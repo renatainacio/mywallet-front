@@ -14,10 +14,11 @@ export default function HomePage() {
   const [saldo, setSaldo] = useState(0);
   const navigate = useNavigate();
   let config = "";
+  let localUserToken;
 
   useEffect(() => {
     if(!token){
-      const localUserToken = JSON.parse(localStorage.getItem("token"));
+      localUserToken = JSON.parse(localStorage.getItem("token"));
       if(localUserToken){
         setToken(localUserToken);
         config = {
@@ -33,6 +34,8 @@ export default function HomePage() {
         "Authorization": `Bearer ${token}`
       }
     }}
+    if(!token && !localUserToken)
+      return navigate('/');
     const promise = axios.get(`${baseURL}/user`, config);
     promise.then((res) => {
       setUser(res.data);
@@ -43,7 +46,7 @@ export default function HomePage() {
     promiseTransactions.then((res) => {
       setTransactions(res.data);
     });
-    promiseTransactions.catch((err) => alert(err.response.data));
+    promise.catch((err) => alert(err.response.data));
     calculateTotal();
   }, []);
 
