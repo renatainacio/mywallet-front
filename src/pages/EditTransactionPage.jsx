@@ -6,9 +6,9 @@ import AuthContext from "../context/AuthContext";
 
 export default function TransactionsPage(props) {
 
-  const {tipo} = useParams();
+  const {tipo, id} = useParams();
   const type = tipo === "entrada" ? "entrada" : tipo === "saida" ? "saída" : "";
-  const {amount, description, id, setAmount, setDescription} = props;
+  const {amount, description, setAmount, setDescription} = props;
   const [token, setToken] = useContext(AuthContext);
   const navigate = useNavigate();
   let config;

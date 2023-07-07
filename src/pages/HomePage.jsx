@@ -13,7 +13,7 @@ export default function HomePage(props) {
   const [transactions, setTransactions] = useState([]);
   const [saldo, setSaldo] = useState(0);
   const [update, setUpdate] = useState(0);
-  const {setAmount, setDescription, setId} = props;
+  const {setAmount, setDescription} = props;
   const navigate = useNavigate();
   let config = "";
   let localUserToken;
@@ -85,8 +85,7 @@ export default function HomePage(props) {
   function updateTransaction(item){
     setAmount(item.amount);
     setDescription(item.description);
-    setId(item._id);
-    navigate(`/editar-registro/${item.type}`);
+    navigate(`/editar-registro/${item.type}/${item._id}`);
   }
 
   return (

@@ -12,7 +12,6 @@ export default function App() {
   const [token, setToken] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
-  const [id, setId] = useState("");
   
   return (
     <PagesContainer>
@@ -21,9 +20,9 @@ export default function App() {
         <Routes>
           <Route path="/" element={<SignInPage />} />
           <Route path="/cadastro" element={<SignUpPage />} />
-          <Route path="/home" element={<HomePage setAmount={setAmount} setDescription={setDescription} setId={setId}/>} />
+          <Route path="/home" element={<HomePage setAmount={setAmount} setDescription={setDescription} />} />
           <Route path="/nova-transacao/:tipo" element={<TransactionsPage />} />
-          <Route path="/editar-registro/:tipo" element={<EditTransactionsPage amount={amount} description={description} id={id} setAmount={setAmount} setDescription={setDescription}/>} />
+          <Route path="/editar-registro/:tipo/:id" element={<EditTransactionsPage amount={amount} description={description} setAmount={setAmount} setDescription={setDescription}/>} />
         </Routes>
       </BrowserRouter>
       </AuthContext.Provider>
