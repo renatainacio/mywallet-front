@@ -41,25 +41,23 @@ export default function TransactionsPage() {
     e.preventDefault();
     if(amount <= 0)
       return alert("O valor informado deve ser positivo.")
-    if(Number.isInteger(amount))
-      return alert("O valor informado deve ser de ponto flutuante.");
-      if(!token){
-        localUserToken = JSON.parse(localStorage.getItem("token"));
-        if(localUserToken){
-          setToken(localUserToken);
-          config = {
-            headers: {
-              "Authorization": `Bearer ${localUserToken}`
-            }
+    if(!token){
+      localUserToken = JSON.parse(localStorage.getItem("token"));
+      if(localUserToken){
+        setToken(localUserToken);
+        config = {
+          headers: {
+            "Authorization": `Bearer ${localUserToken}`
           }
         }
       }
-      else {
-        config = {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-      }}
+    }
+    else {
+      config = {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    }}
     const promise = axios.post(`${import.meta.env.VITE_API_URL}/nova-transacao/${tipo}`, {
       description,
       amount
@@ -72,7 +70,7 @@ export default function TransactionsPage() {
     <TransactionsContainer>
       <h1>Nova {type}</h1>
       <form onSubmit={registerTransaction}>
-        <input placeholder="Valor" type="number" data-test="registry-amount-input" required value={amount} onChange={e => setAmount(e.target.value)}/>
+        <input placeholder="Valor" type="number" data-test="registry-amount-input" required value={amount} onChange={e => setAmount(Number(e.target.value))}/>
         <input placeholder="Descrição" type="text" data-test="registry-name-input" required value={description} onChange={e => setDescription(e.target.value)}/>
         <button data-test="registry-save">Salvar {type}</button>
       </form>

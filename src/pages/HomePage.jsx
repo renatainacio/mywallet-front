@@ -74,7 +74,7 @@ export default function HomePage(props) {
 
   function deleteTransaction(id, description, amount){
     setConfig();
-    if(window.confirm(`Deseja deletar a transação "${description}" de R$${amount.toLocaleString("pt-br").replace(".", "")}?`)){
+    if(window.confirm(`Deseja deletar a transação "${description}" de R$${amount.toLocaleString("pt-br", {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace(".", "")}?`)){
       console.log(`Deletar transacao id ${id}`);
       const promise = axios.delete(`${baseURL}/transacoes/${id}`, config);
       promise.then(() => console.log(setUpdate(update + 1)));
@@ -104,7 +104,7 @@ export default function HomePage(props) {
                         <strong data-test="registry-name" onClick={() => updateTransaction(item)}>{item.description}</strong>
                       </div>
                       <ValueButton>
-                        <Value color={item.type === "entrada" ? "positivo" : "negativo"} data-test="registry-amount">{Number(item.amount).toLocaleString("pt-br").replace('.', '')}</Value>
+                        <Value color={item.type === "entrada" ? "positivo" : "negativo"} data-test="registry-amount">{Number(item.amount).toLocaleString("pt-br", {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace('.', '')}</Value>
                         <button onClick={() => deleteTransaction(item._id, item.description, item.amount)} data-test="registry-delete">X</button>
                       </ValueButton>
                     </ListItemContainer>
@@ -113,7 +113,7 @@ export default function HomePage(props) {
         </ul>
         <article>
           <strong>Saldo</strong>
-          <Value color={saldo >= 0 ? "positivo" : "negativo"} data-test="total-amount">{saldo.toLocaleString("pt-br").replace('.', '')}</Value>
+          <Value color={saldo >= 0 ? "positivo" : "negativo"} data-test="total-amount">{Math.abs(saldo).toLocaleString("pt-br", {minimumFractionDigits: 2, maximumFractionDigits: 2}).replace('.', '')}</Value>
         </article>
       </TransactionsContainer>
 
