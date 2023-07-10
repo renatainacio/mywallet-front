@@ -66,11 +66,17 @@ export default function TransactionsPage() {
     promise.catch((err) => alert(err.response.data));
   };
 
+  function changeValue(e){
+    if(e.target.value[0] === '0')
+      alert("Formato inválido!")
+    setAmount(Number(e.target.value));
+  }
+
   return (
     <TransactionsContainer>
       <h1>Nova {type}</h1>
       <form onSubmit={registerTransaction}>
-        <input placeholder="Valor" type="number" data-test="registry-amount-input" required value={amount} onChange={e => setAmount(Number(e.target.value))}/>
+        <input placeholder="Valor" type="number" data-test="registry-amount-input" required value={amount} onChange={e => changeValue(e)}/>
         <input placeholder="Descrição" type="text" data-test="registry-name-input" required value={description} onChange={e => setDescription(e.target.value)}/>
         <button data-test="registry-save">Salvar {type}</button>
       </form>
