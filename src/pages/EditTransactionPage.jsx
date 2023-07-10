@@ -61,7 +61,7 @@ export default function TransactionsPage(props) {
     }}
     const promise = axios.put(`${import.meta.env.VITE_API_URL}/transacoes/${id}`, {
       description,
-      Number(amount)
+      amount: Number(amount)
     }, config);
     promise.then(() => navigate('/home'));
     promise.catch((err) => alert(err.response.data));
