@@ -38,7 +38,9 @@ export default function TransactionsPage(props) {
 
   function submitUpdate(e){
     e.preventDefault();
-    if(amount <= 0)
+    if(amount[0] === '0')
+      return alert("Formato inválido.")
+    if(Number(amount) <= 0)
       return alert("O valor informado deve ser positivo.")
     if(!token){
       localUserToken = JSON.parse(localStorage.getItem("token"));
@@ -59,23 +61,17 @@ export default function TransactionsPage(props) {
     }}
     const promise = axios.put(`${import.meta.env.VITE_API_URL}/transacoes/${id}`, {
       description,
-      amount
+      Number(amount)
     }, config);
     promise.then(() => navigate('/home'));
     promise.catch((err) => alert(err.response.data));
   };
 
-  function changeValue(e){
-    if(e.target.value[0] === '0')
-      alert("Formato inválido!")
-    setAmount(Number(e.target.value));
-  }
-
   return (
     <TransactionsContainer>
       <h1>Editar {type}</h1>
       <form onSubmit={submitUpdate}>
-        <input placeholder="Valor" type="number" data-test="registry-amount-input" required value={amount} onChange={e => changeValue(e)}/>
+        <input placeholder="Valor" type="number" data-test="registry-amount-input" required value={amount} onChange={e => setAmount(e.target.value)}/>
         <input placeholder="Descrição" type="text" data-test="registry-name-input" required value={description} onChange={e => setDescription(e.target.value)}/>
         <button data-test="registry-save">Atualizar {type}</button>
       </form>
