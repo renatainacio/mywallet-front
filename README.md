@@ -2,7 +2,7 @@
 An app to track personal income and expenses
 
 # Overview
-<img src=https://github.com/renatainacio/mywallet-front/blob/main/public/My-Wallet-Front.gif>
+<img src=https://github.com/renatainacio/mywallet-front/blob/main/public/My-Wallet.gif>
 
 Try it out at: https://mywallet-alpha.vercel.app/
 
