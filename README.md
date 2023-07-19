@@ -21,4 +21,4 @@ This app allows users to register their income and expenses daily, making it eas
 	![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 
 # Related Projects
-This is a Full Stack project. You can check the Back End <a href="https://github.com/renatainacio/mywallet-back repository"> here</a>.
+This is a Full Stack project. You can check the Back End repository<a href="https://github.com/renatainacio/mywallet-back"> here</a>.
