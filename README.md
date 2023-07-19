@@ -7,7 +7,7 @@ An app to track personal income and expenses
 Try it out at: https://mywallet-alpha.vercel.app/
 
 # About
-This app allows users to register their income and expenses daily, making it easier to control their cashflow.
+This app allows users to register their income and expenses daily, making it easier to control their cash flow.
 
 # Features
 - Sign up
