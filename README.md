@@ -15,6 +15,8 @@ This app allows users to register their income and expenses daily, making it eas
 - Add income
 - Add expense
 - List transactions and total balance
+- Edit transactions
+- Delete transactions
 
 # Technologies
   ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
